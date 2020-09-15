@@ -11,9 +11,11 @@ namespace CookBookMVC.Models
         [Key]
         public string Id { get; set; }
         
+        [Display(Name ="Sposób przyrządzenia:")]
         public string Description { get; set; }
         
         public List<IngredientModel> Ingredients { get; set; }
 
+        public List<ImageModel> Images { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CookBookMVC.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace CookBookMVC.Controllers
 {
