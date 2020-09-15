@@ -10,6 +10,8 @@ namespace CookBookMVC.Models
     {
         [Key]
         public string Id { get; set; }
+        [Display(Name ="Nazwa")]
+        [Required]
         public string Name { get; set; }
         public string Energy { get; set; }
         public string Price { get; set; }
