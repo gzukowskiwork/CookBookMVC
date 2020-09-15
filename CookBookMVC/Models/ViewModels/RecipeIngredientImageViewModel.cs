@@ -7,8 +7,9 @@ namespace CookBookMVC.Models.ViewModels
 {
     public class RecipeIngredientImageViewModel
     {
-        public IEnumerable<ImageModel> ImageModels { get; set; }
-        public IEnumerable<IngredientModel> IngredientModels { get; set; }
-        public IEnumerable<RecipeModel> RecipeModels { get; set; }
+        public IEnumerable<Image> ImageModels { get; set; }
+        public IEnumerable<Ingredient> IngredientModels { get; set; }
+        public IEnumerable<Recipe> RecipeModels { get; set; }
+        public IEnumerable<IngredientCount> IngredientCounts { get; set; }
     }
 }

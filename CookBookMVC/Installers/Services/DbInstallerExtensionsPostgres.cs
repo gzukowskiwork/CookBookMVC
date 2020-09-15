@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CookBookMVC.Extensions
 {
-    public class DbInstallerExtensions: IInstaller
+    public class DbInstallerExtensionsPostgres: IInstaller
     {
         public void InstallService(IServiceCollection services, IConfiguration configuration)
         {

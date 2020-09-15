@@ -16,14 +16,14 @@ namespace CookBookMVC.Controllers
 
         public IActionResult Details()
         {
-            List<IngredientModel> ing = new List<IngredientModel>
+            List<Ingredient> ing = new List<Ingredient>
             {
-                new IngredientModel() {Name="Pietruszka" },
-                new IngredientModel() { Name = "Seler" },
-                new IngredientModel() { Name = "Mięso" }
+                new Ingredient() {Name="Pietruszka" },
+                new Ingredient() { Name = "Seler" },
+                new Ingredient() { Name = "Mięso" }
             };
 
-            RecipeModel recipeModel = new RecipeModel()
+            Recipe recipeModel = new Recipe()
             {
                 Id = "asd123asf32411",
                 Description = "Test description",
@@ -39,7 +39,7 @@ namespace CookBookMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(RecipeModel recipeModel)
+        public IActionResult Create(Recipe recipeModel)
         {
             if (ModelState.IsValid)
             {
