@@ -15,10 +15,7 @@ namespace CookBookMVC.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=CookBook;Username=postgres;Password=Password!1");
 
-        public CookBookContext(DbContextOptions<CookBookContext> options) : base(options)
-        {
-
-        }
+        public CookBookContext(DbContextOptions<CookBookContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,9 +37,16 @@ namespace CookBookMVC.Context
                 .HasKey(ii => new { ii.ImageId, ii.IngredientId });
 
             modelBuilder.Entity<ImageIngredient>()
-                .HasOne()
+                .HasOne(ii => ii.Image)
+                .WithMany(i => i.ImageIngredients)
+                .HasForeignKey(ii => ii.ImageId);
+
+            modelBuilder.Entity<ImageIngredient>()
+                .HasOne(ii=>ii.Ingredient)
+                .WithMany(i=>i.ImageIngredients)
+                .HasForeignKey(ii=>ii.IngredientId);
+
+
         }
-
-
     }
 }

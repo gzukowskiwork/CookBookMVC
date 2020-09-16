@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace CookBookMVC.Models
@@ -7,6 +8,7 @@ namespace CookBookMVC.Models
     {
         public string RecipeCountId { get; set; }
 
+        [Display(Name ="Ilość")]
         public int? Count { get; set; }
 
         [ForeignKey(name: "IngredientId")]
