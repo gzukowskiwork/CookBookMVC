@@ -46,7 +46,15 @@ namespace CookBookMVC.Context
                 .WithMany(i=>i.ImageIngredients)
                 .HasForeignKey(ii=>ii.IngredientId);
 
+            modelBuilder.Entity<Recipe>()
+                .HasMany(r => r.Ingredients)
+                .WithOne(i => i.Recipe)
+                .HasForeignKey(r => r.IngredientId);
 
+            modelBuilder.Entity<Ingredient>()
+                .HasOne(ic => ic.IngredientCount)
+                .WithOne(i => i.Ingredient)
+                .HasForeignKey<IngredientCount>(ic => ic.IngredientId);
         }
     }
 }
