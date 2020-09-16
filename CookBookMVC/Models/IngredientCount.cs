@@ -6,6 +6,7 @@ namespace CookBookMVC.Models
 {
     public class IngredientCount
     {
+        [Key]
         public string RecipeCountId { get; set; }
 
         [Display(Name ="Ilość")]

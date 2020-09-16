@@ -25,7 +25,7 @@ namespace CookBookMVC.Controllers
 
             Recipe recipeModel = new Recipe()
             {
-                Id = "asd123asf32411",
+                RecipeId = "asd123asf32411",
                 Description = "Test description",
                 Ingredients = ing
             };
