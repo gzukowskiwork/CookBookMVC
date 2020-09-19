@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Models.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Interfaces.Repository
 {
     public interface IRecipeRepository
     {
+        Task<IQueryable<string>> GetRecipeWithImageByRecipeId(string recipeId);
     }
 }

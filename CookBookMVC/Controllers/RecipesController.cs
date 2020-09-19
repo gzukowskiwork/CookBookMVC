@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CpntextLib.Context;
 using Models.Models;
+using Repository.Wrapper;
 
 namespace CookBookMVC.Controllers
 {
     public class RecipesController : Controller
     {
         private readonly CookBookContext _context;
+        private readonly RepositoryWrapper _repositoryWrapper;
 
-        public RecipesController(CookBookContext context)
+        public RecipesController(CookBookContext context, RepositoryWrapper repositoryWrapper)
         {
             _context = context;
+            _repositoryWrapper = repositoryWrapper;
         }
 
         // GET: Recipes
