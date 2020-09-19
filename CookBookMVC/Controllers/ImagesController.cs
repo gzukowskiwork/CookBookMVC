@@ -13,20 +13,17 @@ namespace CookBookMVC.Controllers
 {
     public class ImagesController : Controller
     {
-        //private readonly CookBookContext _context;
         private readonly IRepositoryWrapper _repositoryWrapper;
 
         public ImagesController(/*CookBookContext context*/ IRepositoryWrapper repositoryWrapper)
         {
-            //_context = context;
             _repositoryWrapper = repositoryWrapper;
         }
 
         // GET: Images
         public async Task<IActionResult> Index()
         {
-           // return View(await _context.ImageModels.ToListAsync());
-            return View(await _repositoryWrapper.imageRepository.GetAllImages());
+            return View(await _repositoryWrapper.ImageRepository.GetAllImages());
         }
 
         //// GET: Images/Details/5

@@ -1,4 +1,5 @@
 ﻿using CpntextLib.Context;
+using Interfaces.Repository;
 using Repository.Repository;
 using Wrapper.Repository;
 
@@ -14,7 +15,7 @@ namespace Repository.Wrapper
             _cookBookContext = cookBookContext;
         }
 
-        public IImageRepository imageRepository
+        public IImageRepository ImageRepository
         {
             get
             {
@@ -25,6 +26,7 @@ namespace Repository.Wrapper
                 return _imageRepository; 
             }
         }
+
 
         public void Save()
         {
