@@ -1,5 +1,5 @@
 ﻿
-namespace CookBookMVC.Models
+namespace Models.Models
 {
     public class ImageRecipe
     {

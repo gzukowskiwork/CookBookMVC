@@ -1,7 +1,7 @@
-﻿using CookBookMVC.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Models.Models;
 
-namespace CookBookMVC.Context
+namespace CpntextLib.Context
 {
     public class CookBookContext : DbContext
     {

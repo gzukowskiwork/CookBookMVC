@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CookBookMVC.Models.ViewModels
+namespace Models.Models.ViewModels
 {
     public class RecipeIngredientImageViewModel
     {

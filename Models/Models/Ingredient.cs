@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 
-namespace CookBookMVC.Models
+namespace Models.Models
 {
     public class Ingredient
     {

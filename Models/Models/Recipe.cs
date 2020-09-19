@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CookBookMVC.Models
+namespace Models.Models
 {
     public class Recipe
     {

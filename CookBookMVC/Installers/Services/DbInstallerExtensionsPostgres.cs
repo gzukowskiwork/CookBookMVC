@@ -1,5 +1,5 @@
-﻿using CookBookMVC.Context;
-using CookBookMVC.Installers;
+﻿using CookBookMVC.Installers;
+using CpntextLib.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

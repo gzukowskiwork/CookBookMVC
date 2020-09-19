@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookBookMVC", "CookBookMVC\CookBookMVC.csproj", "{77DA1E81-1EB1-4693-BEA8-7251C7D8BD3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{3EB67ED7-02AB-4E89-8D11-E208E6932C5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{3EB67ED7-02AB-4E89-8D11-E208E6932C5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContextLib", "ContextLib\ContextLib.csproj", "{3296CB03-E436-4F33-A634-3DE11CEBE2D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{C7341AEB-012A-4509-94E4-17B04F4C283E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{3EB67ED7-02AB-4E89-8D11-E208E6932C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EB67ED7-02AB-4E89-8D11-E208E6932C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EB67ED7-02AB-4E89-8D11-E208E6932C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3296CB03-E436-4F33-A634-3DE11CEBE2D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3296CB03-E436-4F33-A634-3DE11CEBE2D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3296CB03-E436-4F33-A634-3DE11CEBE2D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3296CB03-E436-4F33-A634-3DE11CEBE2D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7341AEB-012A-4509-94E4-17B04F4C283E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7341AEB-012A-4509-94E4-17B04F4C283E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7341AEB-012A-4509-94E4-17B04F4C283E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7341AEB-012A-4509-94E4-17B04F4C283E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

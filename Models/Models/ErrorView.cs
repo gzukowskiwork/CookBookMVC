@@ -1,6 +1,6 @@
 using System;
 
-namespace CookBookMVC.Models
+namespace Models.Models
 {
     public class ErrorView
     {

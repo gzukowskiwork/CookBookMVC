@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace CookBookMVC.Models
+namespace Models.Models
 {
     public class Image
     {

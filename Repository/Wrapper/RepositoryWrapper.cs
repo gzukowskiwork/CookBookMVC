@@ -1,8 +1,5 @@
-﻿using CookBookMVC.Context;
+﻿using CpntextLib.Context;
 using Repository.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Wrapper.Repository;
 
 namespace Repository.Wrapper
@@ -11,6 +8,11 @@ namespace Repository.Wrapper
     {
         private CookBookContext _cookBookContext;
         private IImageRepository _imageRepository;
+
+        public RepositoryWrapper(CookBookContext cookBookContext)
+        {
+            _cookBookContext = cookBookContext;
+        }
 
         public IImageRepository imageRepository
         {
