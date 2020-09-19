@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Interfaces.Repository
 {
-    public class IIngredientCountRepository
+    public interface IIngredientCountRepository
     {
     }
 }

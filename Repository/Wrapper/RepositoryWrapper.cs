@@ -9,6 +9,9 @@ namespace Repository.Wrapper
     {
         private CookBookContext _cookBookContext;
         private IImageRepository _imageRepository;
+        private IIngredientCountRepository _ingredientCountRepository;
+        private IIngredientRepository _ingredientRepository;
+        private IRecipeRepository _recipeRepository;
 
         public RepositoryWrapper(CookBookContext cookBookContext)
         {
@@ -27,6 +30,41 @@ namespace Repository.Wrapper
             }
         }
 
+        public IIngredientCountRepository IngredientCountRepository
+        {
+            get
+            {
+                if (_ingredientCountRepository is null)
+                {
+                    _ingredientCountRepository = new IngredientCountRepository(_cookBookContext);
+                }
+                return _ingredientCountRepository;
+            }
+        }
+
+        public IIngredientRepository IngredientRepository
+        {
+            get
+            {
+                if (_ingredientRepository is null)
+                {
+                    _ingredientRepository = new IngredientRepository(_cookBookContext);
+                }
+                return _ingredientRepository;
+            }
+        }
+
+        public IRecipeRepository RecipeRepository
+        {
+            get
+            {
+                if (_recipeRepository is null)
+                {
+                    _recipeRepository = new RecipeRepository(_cookBookContext);
+                }
+                return _recipeRepository;
+            }
+        }
 
         public void Save()
         {
