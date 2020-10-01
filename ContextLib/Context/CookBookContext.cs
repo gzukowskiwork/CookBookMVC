@@ -1,9 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ContextLib.Confg;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Models;
 using Models.Models;
 
 namespace CpntextLib.Context
 {
-    public class CookBookContext : DbContext
+    public class CookBookContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Image> ImageModels { get; set; }
         public DbSet<ImageIngredient> ImageIngredients { get; set; }
@@ -11,14 +15,12 @@ namespace CpntextLib.Context
         public DbSet<ImageRecipe> ImageRecipes { get; set; }
         public DbSet<Recipe> RecipeModels { get; set; }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=CookBook;Username=postgres;Password=Password!1");
-
         public CookBookContext(DbContextOptions<CookBookContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<ImageRecipe>()
                 .HasKey(ir => new { ir.ImageId, ir.RecipeId });
 
@@ -55,6 +57,8 @@ namespace CpntextLib.Context
                 .HasOne(ic => ic.IngredientCount)
                 .WithOne(i => i.Ingredient)
                 .HasForeignKey<IngredientCount>(ic => ic.IngredientId);
+
+            modelBuilder.ApplyConfiguration(new IdentityRoleConfiguration());
         }
     }
 }
