@@ -19,6 +19,8 @@ namespace Repository.Repository
 
         public async Task<IQueryable<string>> GetRecipeWithImageByRecipeId(string recipeId)
         {
+
+            //ToDO make it work!!
             IQueryable<string> dupa;
             var xx = await CookBookContext.ImageRecipes.Where(r => r.RecipeId.Equals(recipeId)).Select(x => x.ImageId).ToListAsync();
            
