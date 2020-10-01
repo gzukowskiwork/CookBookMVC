@@ -22,14 +22,12 @@ namespace CookBookMVC.Controllers
 
         public IActionResult Index()
         {
-            _logger.LogInfo("Index");
             return View();
             
         }
 
         public IActionResult Privacy()
         {
-            _logger.LogInfo("Privacy");
             return View();
         }
 
