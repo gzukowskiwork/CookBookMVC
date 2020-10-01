@@ -7,25 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using Models.Models;
+using LoggerService;
 
 namespace CookBookMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILoggerManager _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILoggerManager logger)
         {
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            _logger.LogInfo("Index");
             return View();
+            
         }
 
         public IActionResult Privacy()
         {
+            _logger.LogInfo("Privacy");
             return View();
         }
 
