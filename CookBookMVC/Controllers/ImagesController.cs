@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CpntextLib.Context;
 using Models.Models;
 using Wrapper.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CookBookMVC.Controllers
 {

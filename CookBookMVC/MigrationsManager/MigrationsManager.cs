@@ -13,18 +13,16 @@ namespace CookBookMVC.MigrationsManager
     {
         public static IHost MigrateDatabase(this IHost host)
         {
-            using (var scope = host.Services.CreateScope())
+            using (IServiceScope scope = host.Services.CreateScope())
             {
-                using(var appContext = scope.ServiceProvider.GetRequiredService<CookBookContext>())
+                using CookBookContext appContext = scope.ServiceProvider.GetRequiredService<CookBookContext>();
+                try
                 {
-                    try
-                    {
-                        appContext.Database.Migrate();
-                    }
-                    catch
-                    {
+                    appContext.Database.Migrate();
+                }
+                catch
+                {
 
-                    }
                 }
             }
             return host;

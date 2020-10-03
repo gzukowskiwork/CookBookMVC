@@ -21,6 +21,11 @@ namespace ContextLib.Confg
                 {
                     Name = "Author",
                     NormalizedName = "AUTHOR"
+                },
+                new IdentityRole
+                {
+                    Name="Superuser",
+                    NormalizedName= "SUPERUSER"
                 });
         }
     }

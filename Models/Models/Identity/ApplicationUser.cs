@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Models
+
+namespace Models.Identity
 {
     public class ApplicationUser: IdentityUser
     {
         public string Name { get; set; }
-        public string Nick { get; set; }
+        public string Surname { get; set; }
     }
 }

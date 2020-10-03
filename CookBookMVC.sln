@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContextLib", "ContextLib\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{C7341AEB-012A-4509-94E4-17B04F4C283E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{1133F7E3-5435-4875-94FB-5DE94B601525}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggerService", "LoggerService\LoggerService.csproj", "{1133F7E3-5435-4875-94FB-5DE94B601525}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,7 +12,7 @@ namespace CookBookMVC.Extensions
         {
             string connectionString = configuration["connection:connectionString"];
             services.AddDbContext<CookBookContext>(o =>
-                o.UseNpgsql(connectionString));
+                o.UseSqlServer(connectionString));
         }
     }
 }
