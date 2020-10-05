@@ -18,8 +18,8 @@ namespace CookBookMVC.Controllers
 
         public IdentityController(UserManager<ApplicationUser> userManager, IMapper autoMapper, ILoggerManager logger)
         {
-            _userManager = userManager;
             _autoMapper = autoMapper;
+            _userManager = userManager;
             _logger = logger;
 
         }

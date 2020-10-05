@@ -8,7 +8,7 @@ namespace CookBookMVC
     {
         public void MappingProfile()
         {
-            CreateMap<UserRegistration, ApplicationUser>().ForMember(u => u.UserName, opt => opt.MapFrom(x => x.FitstName));
+            CreateMap<UserRegistration, ApplicationUser>().ForMember(u => u.UserName, opt => opt.MapFrom(x => x.Email));
         }
     }
 }

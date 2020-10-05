@@ -1,3 +1,4 @@
+using AutoMapper;
 using CookBookMVC.Installers;
 using CookBookMVC.Installers.Configurations;
 using Microsoft.AspNetCore.Builder;
