@@ -2,14 +2,13 @@
 using EmailService;
 using MailKit.Net.Smtp;
 using MimeKit;
-using System;
-using System.Collections.Generic;
 
 namespace EmailLib
 {
     public class EmailSender: ISendEmail
     {
         private readonly EmailConfiguration _emailConfig;
+        
 
         public EmailSender(EmailConfiguration emailConfig)
         {
@@ -18,7 +17,7 @@ namespace EmailLib
 
         public void SendEmail(Message message)
         {
-            MimeMessage emailMessage = CreateEmailMessage(message);
+            MimeMessage emailMessage = (MimeMessage)CreateEmailMessage(message);
             Send(emailMessage);
         }
 
@@ -45,11 +44,12 @@ namespace EmailLib
                     client.Connect(_emailConfig.SmtpServer, _emailConfig.Port, true);
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate(_emailConfig.UserName, _emailConfig.Password);
+
                     client.Send(mailMessage);
                 }
                 catch
                 {
-                    //log an error message or throw an exception or both.
+                    //log an error message or throw an exception, or both.
                     throw;
                 }
                 finally
