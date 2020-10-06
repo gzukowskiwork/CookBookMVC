@@ -48,22 +48,22 @@ namespace ContextLib.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1598051c-fe3e-440a-961a-b2a76dbb6f04",
-                            ConcurrencyStamp = "35ed089b-4378-4748-8436-3bbbe9189d73",
+                            Id = "e7f3bf2f-6e81-467a-a0cc-906c6d2335d0",
+                            ConcurrencyStamp = "db710a26-b86c-4fd6-9927-e4c877c225e0",
                             Name = "RegisteredUser",
                             NormalizedName = "REGISTEREDUSER"
                         },
                         new
                         {
-                            Id = "f24b4713-253b-400c-a615-f6681a5aa306",
-                            ConcurrencyStamp = "2ec77513-567b-40ef-888d-10528d5af6ef",
+                            Id = "75ff35b5-ce02-48b9-934b-778a4dcf5c1f",
+                            ConcurrencyStamp = "c2faeb1d-506b-423b-a82f-41b6188d9d11",
                             Name = "Author",
                             NormalizedName = "AUTHOR"
                         },
                         new
                         {
-                            Id = "2d7ea0d2-2a59-441c-bac5-8d55573d59f1",
-                            ConcurrencyStamp = "d26fa6ae-eab4-4695-b872-cf695b2de6e9",
+                            Id = "d91142ef-8d7e-4e26-8221-9cbb3d539de2",
+                            ConcurrencyStamp = "d4c8fc4f-4a60-45fe-b304-067e6665271b",
                             Name = "Superuser",
                             NormalizedName = "SUPERUSER"
                         });
@@ -173,7 +173,7 @@ namespace ContextLib.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Models.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Models.Models.Identity.UserRegistration", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -185,7 +185,11 @@ namespace ContextLib.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ConfirmPassword")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
@@ -198,9 +202,6 @@ namespace ContextLib.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -208,6 +209,10 @@ namespace ContextLib.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -355,7 +360,7 @@ namespace ContextLib.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Models.Identity.ApplicationUser", null)
+                    b.HasOne("Models.Models.Identity.UserRegistration", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -364,7 +369,7 @@ namespace ContextLib.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Models.Identity.ApplicationUser", null)
+                    b.HasOne("Models.Models.Identity.UserRegistration", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -379,7 +384,7 @@ namespace ContextLib.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.Identity.ApplicationUser", null)
+                    b.HasOne("Models.Models.Identity.UserRegistration", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -388,7 +393,7 @@ namespace ContextLib.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Models.Identity.ApplicationUser", null)
+                    b.HasOne("Models.Models.Identity.UserRegistration", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

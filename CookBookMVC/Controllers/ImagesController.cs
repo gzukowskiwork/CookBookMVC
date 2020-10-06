@@ -22,6 +22,7 @@ namespace CookBookMVC.Controllers
         }
 
         // GET: Images
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _repositoryWrapper.ImageRepository.GetAllImages());

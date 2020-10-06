@@ -1,4 +1,4 @@
-﻿@model Models.Models.Identity.UserRegistration
+﻿@model Models.Models.Identity.ApplicationUser
 
 <h4>UserRegistration</h4>
 <hr />
@@ -7,9 +7,9 @@
         <form asp-action="Registration">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FitstName" class="control-label"></label>
-                <input asp-for="FitstName" class="form-control" />
-                <span asp-validation-for="FitstName" class="text-danger"></span>
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Surname" class="control-label"></label>

@@ -1,8 +1,8 @@
 ﻿using ContextLib.Confg;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Models.Identity;
 using Models.Models;
+using Models.Models.Identity;
 
 namespace CpntextLib.Context
 {

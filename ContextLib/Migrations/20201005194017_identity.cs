@@ -26,9 +26,7 @@ namespace ContextLib.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
@@ -40,8 +38,11 @@ namespace ContextLib.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Surname = table.Column<string>(nullable: true)
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Surname = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    Password = table.Column<string>(nullable: false),
+                    ConfirmPassword = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -269,17 +270,17 @@ namespace ContextLib.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "1598051c-fe3e-440a-961a-b2a76dbb6f04", "35ed089b-4378-4748-8436-3bbbe9189d73", "RegisteredUser", "REGISTEREDUSER" });
+                values: new object[] { "e7f3bf2f-6e81-467a-a0cc-906c6d2335d0", "db710a26-b86c-4fd6-9927-e4c877c225e0", "RegisteredUser", "REGISTEREDUSER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "f24b4713-253b-400c-a615-f6681a5aa306", "2ec77513-567b-40ef-888d-10528d5af6ef", "Author", "AUTHOR" });
+                values: new object[] { "75ff35b5-ce02-48b9-934b-778a4dcf5c1f", "c2faeb1d-506b-423b-a82f-41b6188d9d11", "Author", "AUTHOR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2d7ea0d2-2a59-441c-bac5-8d55573d59f1", "d26fa6ae-eab4-4695-b872-cf695b2de6e9", "Superuser", "SUPERUSER" });
+                values: new object[] { "d91142ef-8d7e-4e26-8221-9cbb3d539de2", "d4c8fc4f-4a60-45fe-b304-067e6665271b", "Superuser", "SUPERUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
