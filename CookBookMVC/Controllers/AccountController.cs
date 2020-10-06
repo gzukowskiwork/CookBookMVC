@@ -16,12 +16,18 @@ namespace CookBookMVC.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _autoMapper;
         private readonly ILoggerManager _logger;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, IMapper autoMapper, ILoggerManager logger)
+        public AccountController(
+            UserManager<ApplicationUser> userManager
+            , IMapper autoMapper
+            , ILoggerManager logger
+            , SignInManager<ApplicationUser> signInManager)
         {
             _autoMapper = autoMapper;
             _userManager = userManager;
             _logger = logger;
+            _signInManager = signInManager;
 
         }
 
@@ -41,14 +47,10 @@ namespace CookBookMVC.Controllers
             }
             //TODO send email message if somenoe tries to register or login on existing email
             IdentityResult result = await _userManager.CreateAsync(user, user.Password);
-            
+
             if (!result.Succeeded)
             {
-                foreach (IdentityError error in result.Errors)
-                {
-                    ModelState.TryAddModelError(error.Code, error.Description);
-                }
-                return View(user);
+                return AddErrorsAndReturnToRegistrationView(user, result);
             }
 
             await _userManager.AddToRoleAsync(user, "RegisteredUser");
@@ -56,15 +58,17 @@ namespace CookBookMVC.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult>Login(LoginModel loginModel)
+        public async Task<IActionResult> Login(LoginModel loginModel, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -73,27 +77,52 @@ namespace CookBookMVC.Controllers
 
             ApplicationUser user = await _userManager.FindByEmailAsync(loginModel.Email);
 
-            return await AddClaimsToUserAndRedirect(loginModel, user);
-
+            var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, false);
+            
+            return CheckLoginSuccsessAndRedirect(returnUrl, result);
         }
 
-        private async Task<IActionResult> AddClaimsToUserAndRedirect(LoginModel loginModel, ApplicationUser user)
+        [HttpPost]
+        public async Task<IActionResult> Logout()
         {
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+
+
+        private IActionResult CheckLoginSuccsessAndRedirect(string returnUrl, Microsoft.AspNetCore.Identity.SignInResult result)
+        {
+            if (result.Succeeded)
             {
-                ClaimsIdentity identity = new ClaimsIdentity(IdentityConstants.ApplicationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-                identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-
-                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(identity));
-
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                
+                return SignInAndRedirectToAction(returnUrl);
             }
             else
             {
                 ModelState.AddModelError("", "Invalid user name or password");
                 return View();
             }
+        }
+
+
+        private IActionResult AddErrorsAndReturnToRegistrationView(ApplicationUser user, IdentityResult result)
+        {
+            foreach (IdentityError error in result.Errors)
+            {
+                ModelState.TryAddModelError(error.Code, error.Description);
+            }
+            return View(user);
+        }
+
+        private IActionResult SignInAndRedirectToAction(string returnUrl)
+        {
+
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }
