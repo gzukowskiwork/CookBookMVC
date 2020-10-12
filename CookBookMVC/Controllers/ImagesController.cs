@@ -9,22 +9,28 @@ using CpntextLib.Context;
 using Models.Models;
 using Wrapper.Repository;
 using Microsoft.AspNetCore.Authorization;
+using EmailService;
+using EmailLib;
+using CookBookMVC.Installers.Services;
 
 namespace CookBookMVC.Controllers
 {
     public class ImagesController : Controller
     {
         private readonly IRepositoryWrapper _repositoryWrapper;
-
-        public ImagesController(/*CookBookContext context*/ IRepositoryWrapper repositoryWrapper)
+        private readonly ISendEmail _sendEmail;
+        public ImagesController(/*CookBookContext context*/ IRepositoryWrapper repositoryWrapper, ISendEmail sendEmail)
         {
             _repositoryWrapper = repositoryWrapper;
+            _sendEmail = sendEmail;
         }
 
         // GET: Images
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> Index()
         {
+            var message = new Message(new string[] { "grzegorz.zukowski.gda@gmail.com" }, "Test email", "This is the content from our email.");
+            _sendEmail.SendEmail(message);
             return View(await _repositoryWrapper.ImageRepository.GetAllImages());
         }
 

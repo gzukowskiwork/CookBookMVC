@@ -1,10 +1,10 @@
 ﻿using EmailService;
-
+using System.Threading.Tasks;
 
 namespace EmailLib
 {
     public interface ISendEmail
     {
-        void SendEmail(Message message);
+        Task SendEmailAsync(Message message);
     }
 }

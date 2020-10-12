@@ -1,2 +1,0 @@
-2020-10-06 13:06:58.9317 INFO logged to system
-2020-10-06 13:06:58.9789 WARN asdafsfdg
