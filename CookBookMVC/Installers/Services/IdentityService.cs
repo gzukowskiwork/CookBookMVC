@@ -15,7 +15,8 @@ namespace CookBookMVC.Installers.Services
                 options.Password.RequiredLength = 8;
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<CookBookContext>();
+            .AddEntityFrameworkStores<CookBookContext>()
+            .AddDefaultTokenProviders();
         }
     }
 }

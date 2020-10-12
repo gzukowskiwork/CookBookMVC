@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmailLib;
+using EmailService;
 using LoggerService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -17,18 +19,20 @@ namespace CookBookMVC.Controllers
         private readonly IMapper _autoMapper;
         private readonly ILoggerManager _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ISendEmail _sendEmail;
 
         public AccountController(
-            UserManager<ApplicationUser> userManager
+              UserManager<ApplicationUser> userManager
             , IMapper autoMapper
             , ILoggerManager logger
-            , SignInManager<ApplicationUser> signInManager)
+            , SignInManager<ApplicationUser> signInManager
+            , ISendEmail sendEmail)
         {
             _autoMapper = autoMapper;
             _userManager = userManager;
             _logger = logger;
             _signInManager = signInManager;
-
+            _sendEmail = sendEmail;
         }
 
         [HttpGet]
@@ -90,12 +94,12 @@ namespace CookBookMVC.Controllers
         }
 
 
-
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
         private IActionResult CheckLoginSuccsessAndRedirect(string returnUrl, Microsoft.AspNetCore.Identity.SignInResult result)
         {
             if (result.Succeeded)
             {
-                
                 return SignInAndRedirectToAction(returnUrl);
             }
             else
@@ -104,7 +108,6 @@ namespace CookBookMVC.Controllers
                 return View();
             }
         }
-
 
         private IActionResult AddErrorsAndReturnToRegistrationView(ApplicationUser user, IdentityResult result)
         {
@@ -124,5 +127,51 @@ namespace CookBookMVC.Controllers
             }
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(resetPasswordModel);
+            }
+
+            var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
+            if(user == null)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callback = Url.Action(nameof(ResetPassword), "AccountController", new
+            {
+                token,
+                email = user.Email,
+            }, Request.Scheme);
+            
+            var message = new Message(new string[] { "grzegorz.zukowski.gda@gmail.com" }, "Reset password token", callback);
+            await _sendEmail.SendEmailAsync(message);
+
+            return RedirectToAction(nameof(ResetPasswordConfirmation));
+        }
+
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+
+
+
+        
     }
 }

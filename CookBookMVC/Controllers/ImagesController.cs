@@ -30,7 +30,7 @@ namespace CookBookMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var message = new Message(new string[] { "grzegorz.zukowski.gda@gmail.com" }, "Test email", "This is the content from our email.");
-            _sendEmail.SendEmail(message);
+            await _sendEmail.SendEmailAsync(message);
             return View(await _repositoryWrapper.ImageRepository.GetAllImages());
         }
 
