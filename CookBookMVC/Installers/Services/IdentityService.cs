@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Models.Identity;
+using System;
 
 namespace CookBookMVC.Installers.Services
 {
@@ -17,6 +18,9 @@ namespace CookBookMVC.Installers.Services
             })
             .AddEntityFrameworkStores<CookBookContext>()
             .AddDefaultTokenProviders();
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            options.TokenLifespan = TimeSpan.FromHours(1));
         }
     }
 }

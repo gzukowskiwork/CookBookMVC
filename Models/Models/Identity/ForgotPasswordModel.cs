@@ -2,7 +2,7 @@
 
 namespace Models.Models.Identity
 {
-    public class ResetPasswordModel
+    public class ForgotPasswordModel
     {
         [Required]
         [EmailAddress]
