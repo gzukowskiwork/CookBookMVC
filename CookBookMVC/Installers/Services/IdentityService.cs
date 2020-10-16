@@ -1,4 +1,5 @@
-﻿using CpntextLib.Context;
+﻿using CookBookMVC.Factory;
+using CpntextLib.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,12 +16,19 @@ namespace CookBookMVC.Installers.Services
             {
                 options.Password.RequiredLength = 8;
                 options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = true;
+                options.Tokens.EmailConfirmationTokenProvider = "emailconfirmation";
             })
             .AddEntityFrameworkStores<CookBookContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconfirmation");
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
+
+            services.Configure<EmailConfirmationTokenProviderOptions>(options =>
+            options.TokenLifespan = TimeSpan.FromDays(2));
+
         }
     }
 }

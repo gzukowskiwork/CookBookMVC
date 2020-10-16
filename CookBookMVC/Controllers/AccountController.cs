@@ -57,16 +57,47 @@ namespace CookBookMVC.Controllers
                 return AddErrorsAndReturnToRegistrationView(user, result);
             }
 
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmEmailLink = Url.Action(nameof(ConfirmEmail), "Account", new { token, user.Email }, Request.Scheme);
+
+            var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmEmailLink);
+            await _sendEmail.SendEmailAsync(message);
+
             await _userManager.AddToRoleAsync(user, "RegisteredUser");
 
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(SuccessRegistration));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if(user == null)
+            {
+                return View("Error");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+            return View(result.Succeeded?nameof(ConfirmEmail): "Error");
+        }
+
+        [HttpGet]
+        public IActionResult SuccessRegistration()
+        {
+            return View();
+        }
 
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Error()
+        {
             return View();
         }
 
@@ -82,7 +113,7 @@ namespace CookBookMVC.Controllers
             ApplicationUser user = await _userManager.FindByEmailAsync(loginModel.Email);
 
             var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, false);
-
+           
             return CheckLoginSuccsessAndRedirect(returnUrl, result);
         }
 
@@ -104,7 +135,7 @@ namespace CookBookMVC.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Invalid user name or password");
+                ModelState.AddModelError("", "Invalid login atempt");
                 return View();
             }
         }
@@ -113,6 +144,7 @@ namespace CookBookMVC.Controllers
         {
             foreach (IdentityError error in result.Errors)
             {
+                
                 ModelState.TryAddModelError(error.Code, error.Description);
             }
             return View(user);
@@ -147,7 +179,7 @@ namespace CookBookMVC.Controllers
             var user = await _userManager.FindByEmailAsync(resetPasswordModel.Email);
             if (user == null)
             {
-                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                return RedirectToAction(nameof(ForgotPasswordBadEmail));
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -163,6 +195,13 @@ namespace CookBookMVC.Controllers
             return RedirectToAction(nameof(ForgotPasswordConfirmation));
         }
 
+        [HttpGet]
+        public IActionResult ForgotPasswordBadEmail()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -188,19 +227,21 @@ namespace CookBookMVC.Controllers
 
             if(user == null)
             {
-                RedirectToAction(nameof(ResetPasswordConfirmation));
+                RedirectToAction(nameof(ForgotPasswordBadEmail));
             }
 
             var resetPasswordResult = await _userManager.ResetPasswordAsync(user, resetModel.Token, resetModel.Password);
 
             if (!resetPasswordResult.Succeeded)
             {
-                foreach(var errors in resetPasswordResult.Errors)
-                {
-                    ModelState.TryAddModelError(errors.Code, errors.Description);
-                }
 
-                return View();
+                return AddErrorsAndReturnToRegistrationView(user, resetPasswordResult);
+                //foreach(var errors in resetPasswordResult.Errors)
+                //{
+                //    ModelState.TryAddModelError(errors.Code, errors.Description);
+                //}
+
+                //return View();
             }
 
             return RedirectToAction(nameof(ResetPasswordConfirmation));
@@ -211,5 +252,6 @@ namespace CookBookMVC.Controllers
         {
             return View();
         }
+
     }
 }
