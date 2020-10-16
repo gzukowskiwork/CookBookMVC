@@ -27,7 +27,8 @@ namespace CookBookMVC.Installers.Services
             })
             .AddEntityFrameworkStores<CookBookContext>()
             .AddDefaultTokenProviders()
-            .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconfirmation");
+            .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconfirmation")
+            .AddPasswordValidator<CustomPasswordValidator<ApplicationUser>>();
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
