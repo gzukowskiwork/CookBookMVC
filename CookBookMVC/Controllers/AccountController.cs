@@ -171,6 +171,7 @@ namespace CookBookMVC.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         [HttpGet]
@@ -263,6 +264,86 @@ namespace CookBookMVC.Controllers
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalAuth(string provider, string returnUrl = null)
+        {
+            string redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
+            AuthenticationProperties properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl= null)
+        {
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            if(info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+            var signInResult = 
+                await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (signInResult.Succeeded)
+            {
+                return SignInAndRedirectToAction(returnUrl);
+            }
+            if (signInResult.IsLockedOut)
+            {
+                return RedirectToAction(nameof(ForgotPassword));
+            }
+            else
+            {
+                ViewData["ReturnUrl"] = returnUrl;
+                ViewData["Provider"] = info.LoginProvider;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                return View("ExternalLogin", new ExternalLoginModel { Email = email });
+            }
+        }
+
+        public async Task<IActionResult> ExternalLoginConfrmation(ExternalLoginModel model, string returnUrl= null)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if(info == null)
+            {
+                return View(nameof(Error));
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            IdentityResult result;
+            if (user!=null)
+            {
+                result = await _userManager.AddLoginAsync(user, info);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: true);
+                    return SignInAndRedirectToAction(returnUrl);
+                }
+            }
+            else
+            {
+                model.Principal = info.Principal;
+                result = await _userManager.CreateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: true);
+                    return SignInAndRedirectToAction(returnUrl);
+                }
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.TryAddModelError(error.Code, error.Description);
+            }
+            return View(nameof(ExternalAuth), model);
         }
 
     }

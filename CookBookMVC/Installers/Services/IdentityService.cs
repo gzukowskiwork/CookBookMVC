@@ -36,6 +36,15 @@ namespace CookBookMVC.Installers.Services
             services.Configure<EmailConfirmationTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromDays(2));
 
+            services.AddAuthentication().AddGoogle("google", options =>
+            {
+                var googleAuth = configuration.GetSection("Authentication:Google");
+
+                options.ClientId = googleAuth["ClientId"];
+                options.ClientSecret = googleAuth["ClientSecret"];
+                options.SignInScheme = IdentityConstants.ExternalScheme;
+            });
+
         }
     }
 }
