@@ -112,9 +112,11 @@ namespace CookBookMVC.Controllers
 
             ApplicationUser user = await _userManager.FindByEmailAsync(loginModel.Email);
 
-            var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, false);
+            var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, true);
            
-            return CheckLoginSuccsessAndRedirect(returnUrl, result);
+            return CheckLoginSuccsessAndRedirect(returnUrl, result, user.Email);
+
+            
         }
 
         [HttpPost]
@@ -127,11 +129,21 @@ namespace CookBookMVC.Controllers
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        private IActionResult CheckLoginSuccsessAndRedirect(string returnUrl, Microsoft.AspNetCore.Identity.SignInResult result)
+        private IActionResult CheckLoginSuccsessAndRedirect(string returnUrl, Microsoft.AspNetCore.Identity.SignInResult result, string emial)
         {
             if (result.Succeeded)
             {
                 return SignInAndRedirectToAction(returnUrl);
+            }
+            if (result.IsLockedOut)
+            {
+                var forgotPassLink = Url.Action(nameof(ForgotPassword), "Account", new { }, Request.Scheme);
+                var content = string.Format("Your account is locked out, to reset your password, please click this link: {0}", forgotPassLink);
+
+                var message = new Message(new string[] { emial }, "Locked out account information", content);
+                _sendEmail.SendEmailAsync(message);
+                ModelState.AddModelError("", "This account is locked out");
+                return View();
             }
             else
             {

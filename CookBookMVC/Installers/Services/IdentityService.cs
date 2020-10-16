@@ -18,6 +18,12 @@ namespace CookBookMVC.Installers.Services
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
                 options.Tokens.EmailConfirmationTokenProvider = "emailconfirmation";
+
+                options.Lockout.AllowedForNewUsers = true;
+                //Todo chnage to 30 after testing
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 3;
+                
             })
             .AddEntityFrameworkStores<CookBookContext>()
             .AddDefaultTokenProviders()
