@@ -20,7 +20,7 @@ namespace CookBookMVC.Factory
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(ApplicationUser user)
         {
             var identity = await base.GenerateClaimsAsync(user);
-            identity.AddClaim(new Claim("Surname", user.Surname));
+            identity.AddClaim(new Claim("Nick", user.UserName));
             return identity;
         }
     }

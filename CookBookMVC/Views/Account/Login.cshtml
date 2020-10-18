@@ -9,6 +9,18 @@
 <h4>LoginModel</h4>
 <hr />
 <div class="row">
+    
+        @try
+        {
+            if (ViewBag.HasConfirmedEmail)
+            {
+                <partial name="_ConfirmEmail" />
+            }
+        }
+        catch
+        {
+
+        }
     <div class="col-md-4">
         <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]">
             <div asp-validation-summary="All" class="text-danger"></div>

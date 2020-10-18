@@ -26,7 +26,7 @@ namespace CookBookMVC.Controllers
         }
 
         // GET: Images
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var message = new Message(new string[] { "grzegorz.zukowski.gda@gmail.com" }, "Test email", "This is the content from our email.");

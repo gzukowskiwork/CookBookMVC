@@ -8,9 +8,8 @@ namespace Models.Models.Identity
 {
     public class ApplicationUser : IdentityUser
     {
-        [Display(Name ="Name")]
+        [Display(Name ="Nick")]
         public override string UserName { get; set; }
-        public string Surname { get; set; }
         
         [DataType(DataType.EmailAddress)]
         [Required(ErrorMessage ="Email is required")]

@@ -50,6 +50,7 @@ namespace CookBookMVC.Controllers
                 return View(user);
             }
             //TODO send email message if somenoe tries to register or login on existing email
+
             IdentityResult result = await _userManager.CreateAsync(user, user.Password);
 
             if (!result.Succeeded)
@@ -71,6 +72,7 @@ namespace CookBookMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
+
             var user = await _userManager.FindByEmailAsync(email);
             if(user == null)
             {
@@ -79,7 +81,9 @@ namespace CookBookMVC.Controllers
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
-            return View(result.Succeeded?nameof(ConfirmEmail): "Error");
+            ViewBag.HasConfirmedEmail = result.Succeeded;
+
+            return View(result.Succeeded?nameof(Login): "Error");
         }
 
         [HttpGet]
@@ -329,7 +333,6 @@ namespace CookBookMVC.Controllers
             }
             else
             {
-                model.Principal = info.Principal;
                 result = await _userManager.CreateAsync(user);
 
                 if (result.Succeeded)

@@ -16,6 +16,7 @@ namespace CookBookMVC.Installers.Services
             {
                 options.Password.RequiredLength = 8;
                 options.User.RequireUniqueEmail = true;
+               
                 options.SignIn.RequireConfirmedEmail = true;
                 options.Tokens.EmailConfirmationTokenProvider = "emailconfirmation";
 
@@ -30,12 +31,6 @@ namespace CookBookMVC.Installers.Services
             .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconfirmation")
             .AddPasswordValidator<CustomPasswordValidator<ApplicationUser>>();
 
-            services.Configure<DataProtectionTokenProviderOptions>(options =>
-            options.TokenLifespan = TimeSpan.FromHours(1));
-
-            services.Configure<EmailConfirmationTokenProviderOptions>(options =>
-            options.TokenLifespan = TimeSpan.FromDays(2));
-
             services.AddAuthentication().AddGoogle("google", options =>
             {
                 var googleAuth = configuration.GetSection("Authentication:Google");
@@ -44,6 +39,13 @@ namespace CookBookMVC.Installers.Services
                 options.ClientSecret = googleAuth["ClientSecret"];
                 options.SignInScheme = IdentityConstants.ExternalScheme;
             });
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            options.TokenLifespan = TimeSpan.FromHours(1));
+
+            services.Configure<EmailConfirmationTokenProviderOptions>(options =>
+            options.TokenLifespan = TimeSpan.FromDays(2));
+
 
         }
     }
