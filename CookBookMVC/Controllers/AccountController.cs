@@ -50,6 +50,11 @@ namespace CookBookMVC.Controllers
                 return View(user);
             }
             //TODO send email message if somenoe tries to register or login on existing email
+            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            if (existingUser != null)
+            {
+                return await SendSecurityViolationMessageAndReturnView(existingUser);
+            }
 
             IdentityResult result = await _userManager.CreateAsync(user, user.Password);
 
@@ -67,6 +72,18 @@ namespace CookBookMVC.Controllers
             await _userManager.AddToRoleAsync(user, "RegisteredUser");
 
             return RedirectToAction(nameof(SuccessRegistration));
+        }
+
+        private async Task<IActionResult> SendSecurityViolationMessageAndReturnView(ApplicationUser user)
+        {
+            var securityMessage = new Message(
+                                new string[] { user.Email }
+                                , "Possible security violation"
+                                , "Someone tried to register with Your eamil in Cook Book Application. If it was You ignore this message"
+                                );
+            await _sendEmail.SendEmailAsync(securityMessage);
+            
+            return View(user);
         }
 
         [HttpGet]

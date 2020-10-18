@@ -1,0 +1,6 @@
+2020-10-18 22:52:08.1279 ERROR 534: 5.7.9 Application-specific password required. Learn more at
+5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor j17sm3221807ljg.82 - gsmtp
+2020-10-18 22:53:24.1826 ERROR 534: 5.7.9 Application-specific password required. Learn more at
+5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor a74sm2950465lfd.90 - gsmtp
+2020-10-18 22:56:27.8313 ERROR 534: 5.7.9 Application-specific password required. Learn more at
+5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor b66sm2944811lfg.153 - gsmtp
