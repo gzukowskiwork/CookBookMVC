@@ -74,16 +74,16 @@ namespace CookBookMVC.Controllers
             return RedirectToAction(nameof(SuccessRegistration));
         }
 
-        private async Task<IActionResult> SendSecurityViolationMessageAndReturnView(ApplicationUser user)
+        private async Task<IActionResult> SendSecurityViolationMessageAndReturnView(ApplicationUser existingUser)
         {
             var securityMessage = new Message(
-                                new string[] { user.Email }
+                                new string[] { existingUser.Email }
                                 , "Possible security violation"
                                 , "Someone tried to register with Your eamil in Cook Book Application. If it was You ignore this message"
                                 );
             await _sendEmail.SendEmailAsync(securityMessage);
-            
-            return View(user);
+            _logger.LogInfo("Someone tried to login on "+ existingUser.Email + " existing email");
+            return View();
         }
 
         [HttpGet]
