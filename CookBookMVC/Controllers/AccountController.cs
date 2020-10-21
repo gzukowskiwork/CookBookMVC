@@ -13,6 +13,8 @@ using Models.Models.Identity;
 
 namespace CookBookMVC.Controllers
 {
+    //TODO  add logging where possible
+    //TODO check for exception handling
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -49,7 +51,7 @@ namespace CookBookMVC.Controllers
             {
                 return View(user);
             }
-            //TODO send email message if somenoe tries to register or login on existing email
+            
             var existingUser = await _userManager.FindByEmailAsync(user.Email);
             if (existingUser != null)
             {
@@ -286,7 +288,7 @@ namespace CookBookMVC.Controllers
         {
             return View();
         }
-
+        #region ExternalAuth
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ExternalAuth(string provider, string returnUrl = null)
@@ -365,6 +367,15 @@ namespace CookBookMVC.Controllers
             }
             return View(nameof(ExternalAuth), model);
         }
+#endregion
+
+        [HttpGet]
+        public IActionResult Details()
+        {
+            
+            return View();
+        }
+
 
     }
 }

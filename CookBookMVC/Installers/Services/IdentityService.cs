@@ -31,14 +31,14 @@ namespace CookBookMVC.Installers.Services
             .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>("emailconfirmation")
             .AddPasswordValidator<CustomPasswordValidator<ApplicationUser>>();
 
-            services.AddAuthentication().AddGoogle("google", options =>
-            {
-                var googleAuth = configuration.GetSection("Authentication:Google");
+            //services.AddAuthentication().AddGoogle("google", options =>
+            //{
+            //    var googleAuth = configuration.GetSection("Authentication:Google");
 
-                options.ClientId = googleAuth["ClientId"];
-                options.ClientSecret = googleAuth["ClientSecret"];
-                options.SignInScheme = IdentityConstants.ExternalScheme;
-            });
+            //    options.ClientId = googleAuth["ClientId"];
+            //    options.ClientSecret = googleAuth["ClientSecret"];
+            //    options.SignInScheme = IdentityConstants.ExternalScheme;
+            //});
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));

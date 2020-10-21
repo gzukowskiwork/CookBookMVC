@@ -21,6 +21,7 @@ namespace CookBookMVC.Factory
         {
             var identity = await base.GenerateClaimsAsync(user);
             identity.AddClaim(new Claim("Nick", user.UserName));
+            identity.AddClaim(new Claim("Id", user.Id));
             return identity;
         }
     }
