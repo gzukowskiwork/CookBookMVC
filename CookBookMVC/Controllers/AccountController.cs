@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,13 +8,17 @@ using LoggerService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Models.Models.Identity;
 
 namespace CookBookMVC.Controllers
 {
-    //TODO  add logging where possible
+    //TODO add logging where possible
     //TODO check for exception handling
+    //TODO refactor - separete classes for actions
+    //TODO unit tests
+    //TODO external login
+    //TODO delete account
+    //TODO mange views
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,18 +27,29 @@ namespace CookBookMVC.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ISendEmail _sendEmail;
 
+        private string LoggedUserId
+        {
+            get
+            {
+                string userId = HttpContext.User.Claims.First(x => x.Type == "Id").Value;
+                return userId;
+            }
+        }
+
         public AccountController(
               UserManager<ApplicationUser> userManager
             , IMapper autoMapper
             , ILoggerManager logger
             , SignInManager<ApplicationUser> signInManager
-            , ISendEmail sendEmail)
+            , ISendEmail sendEmail
+            )
         {
             _autoMapper = autoMapper;
             _userManager = userManager;
             _logger = logger;
             _signInManager = signInManager;
             _sendEmail = sendEmail;
+            
         }
 
         [HttpGet]
@@ -51,7 +66,7 @@ namespace CookBookMVC.Controllers
             {
                 return View(user);
             }
-            
+
             var existingUser = await _userManager.FindByEmailAsync(user.Email);
             if (existingUser != null)
             {
@@ -84,7 +99,7 @@ namespace CookBookMVC.Controllers
                                 , "Someone tried to register with Your eamil in Cook Book Application. If it was You ignore this message"
                                 );
             await _sendEmail.SendEmailAsync(securityMessage);
-            _logger.LogInfo("Someone tried to login on "+ existingUser.Email + " existing email");
+            _logger.LogInfo("Someone tried to login on " + existingUser.Email + " existing email");
             return View();
         }
 
@@ -93,16 +108,16 @@ namespace CookBookMVC.Controllers
         {
 
             var user = await _userManager.FindByEmailAsync(email);
-            if(user == null)
+            if (user == null)
             {
                 return View("Error");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
-
+            
             ViewBag.HasConfirmedEmail = result.Succeeded;
 
-            return View(result.Succeeded?nameof(Login): "Error");
+            return View(result.Succeeded ? nameof(Login) : "Error");
         }
 
         [HttpGet]
@@ -136,10 +151,8 @@ namespace CookBookMVC.Controllers
             ApplicationUser user = await _userManager.FindByEmailAsync(loginModel.Email);
 
             var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, true);
-           
-            return CheckLoginSuccsessAndRedirect(returnUrl, result, user.Email);
 
-            
+            return CheckLoginSuccsessAndRedirect(returnUrl, result, user.Email);
         }
 
         [HttpPost]
@@ -179,7 +192,7 @@ namespace CookBookMVC.Controllers
         {
             foreach (IdentityError error in result.Errors)
             {
-                
+
                 ModelState.TryAddModelError(error.Code, error.Description);
             }
             return View(user);
@@ -261,7 +274,7 @@ namespace CookBookMVC.Controllers
 
             var user = await _userManager.FindByEmailAsync(resetModel.Email);
 
-            if(user == null)
+            if (user == null)
             {
                 RedirectToAction(nameof(ForgotPasswordBadEmail));
             }
@@ -272,12 +285,6 @@ namespace CookBookMVC.Controllers
             {
 
                 return AddErrorsAndReturnToRegistrationView(user, resetPasswordResult);
-                //foreach(var errors in resetPasswordResult.Errors)
-                //{
-                //    ModelState.TryAddModelError(errors.Code, errors.Description);
-                //}
-
-                //return View();
             }
 
             return RedirectToAction(nameof(ResetPasswordConfirmation));
@@ -298,14 +305,14 @@ namespace CookBookMVC.Controllers
             return Challenge(properties, provider);
         }
 
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl= null)
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null)
         {
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-            if(info == null)
+            if (info == null)
             {
                 return RedirectToAction(nameof(Login));
             }
-            var signInResult = 
+            var signInResult =
                 await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
 
             if (signInResult.Succeeded)
@@ -325,7 +332,7 @@ namespace CookBookMVC.Controllers
             }
         }
 
-        public async Task<IActionResult> ExternalLoginConfrmation(ExternalLoginModel model, string returnUrl= null)
+        public async Task<IActionResult> ExternalLoginConfrmation(ExternalLoginModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
@@ -334,14 +341,14 @@ namespace CookBookMVC.Controllers
 
             ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
 
-            if(info == null)
+            if (info == null)
             {
                 return View(nameof(Error));
             }
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             IdentityResult result;
-            if (user!=null)
+            if (user != null)
             {
                 result = await _userManager.AddLoginAsync(user, info);
                 if (result.Succeeded)
@@ -367,14 +374,117 @@ namespace CookBookMVC.Controllers
             }
             return View(nameof(ExternalAuth), model);
         }
-#endregion
+        #endregion
 
         [HttpGet]
-        public IActionResult Details()
+        public async Task<IActionResult> Details()
         {
-            
+            //string userId = HttpContext.User.Claims.First(x => x.Type == "Id").Value;
+            if (LoggedUserId == null)
+            {
+                return View(NotFound());
+            }
+            var loggedUser = await _userManager.FindByIdAsync(LoggedUserId);
+            if (loggedUser == null)
+            {
+                return View(NotFound());
+            }
+            else
+            {
+                return View(loggedUser);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel changePasswordModel )
+        {
+            //string userId = HttpContext.User.Claims.First(x => x.Type == "Id").Value;
+            if (LoggedUserId == null)
+            {
+                return View(NotFound());
+            }
+            var loggedUser = await _userManager.FindByIdAsync(LoggedUserId);
+            
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(ChangePassword));
+            }
+
+            var resetResult = await _userManager.ChangePasswordAsync(loggedUser, changePasswordModel.CurrentPassword, changePasswordModel.NewPassword);
+
+            if (!resetResult.Succeeded)
+            {
+                return RedirectToAction(nameof(ChangePassword));
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult ChangeEmail()
+        {
+            return View();
+        }
+
+        //This method sends email to user with confirmation link
+        //user recives email clicks on link and is redirected to confirmation view
+        //behind the sceens is another method that changes email to new one
+        //TODO:
+        //1 method that generates confirmation link for email change
+        //2 method that handles email change
+        //3 view with email confirmation
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeEmail(ChangeEmailModel changeEmailModel)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            ApplicationUser loggedUser = await _userManager.FindByIdAsync(LoggedUserId);
+
+            var token = await _userManager.GenerateChangeEmailTokenAsync(loggedUser, changeEmailModel.NewEmail);
+
+            var confirmEmailLink = Url.Action(nameof(ConfirmChangeEmail), "Account", new { token, changeEmailModel.NewEmail }, Request.Scheme);
+
+            var message = new Message(new string[] { changeEmailModel.NewEmail }, "Confirmation email link", confirmEmailLink);
+            await _sendEmail.SendEmailAsync(message);
+
+            return RedirectToAction(nameof(CheckEmail));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmChangeEmail(string token, string newEmail)
+        {
+
+            //var user = await _userManager.FindByEmailAsync(email);
+            //if (user == null)
+            //{
+            //    return View("Error");
+            //}
+           
+            ApplicationUser loggedUser = await _userManager.FindByIdAsync(LoggedUserId);
+
+            var result = await _userManager.ChangeEmailAsync(loggedUser, newEmail, token);
+
+            ViewBag.HasChangedEmail = result.Succeeded;
+            
+            return View(result.Succeeded ? nameof(Details) : "Error");
+        }
+
+        public IActionResult CheckEmail()
+        {
+            return View();
+        }
+
+
 
 
     }

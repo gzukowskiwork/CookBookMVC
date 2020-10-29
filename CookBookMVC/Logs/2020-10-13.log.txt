@@ -1,4 +1,0 @@
-2020-10-13 19:08:12.4485 ERROR 535: 5.7.8 Username and Password not accepted. Learn more at
-5.7.8  https://support.google.com/mail/?p=BadCredentials z21sm104113lfb.20 - gsmtp
-2020-10-13 19:10:40.5603 ERROR 535: 5.7.8 Username and Password not accepted. Learn more at
-5.7.8  https://support.google.com/mail/?p=BadCredentials l3sm97576lfp.219 - gsmtp

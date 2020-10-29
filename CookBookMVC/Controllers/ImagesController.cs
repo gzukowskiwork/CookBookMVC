@@ -31,6 +31,7 @@ namespace CookBookMVC.Controllers
         {
             var message = new Message(new string[] { "grzegorz.zukowski.gda@gmail.com" }, "Test email", "This is the content from our email.");
             await _sendEmail.SendEmailAsync(message);
+            var xx = await _repositoryWrapper.ImageRepository.GetAllImages();
             return View(await _repositoryWrapper.ImageRepository.GetAllImages());
         }
 
@@ -58,8 +59,8 @@ namespace CookBookMVC.Controllers
             return View();
         }
 
-        // POST: Images/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //POST: Images/Create
+        //To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -67,11 +68,11 @@ namespace CookBookMVC.Controllers
         //{
         //    if (ModelState.IsValid)
         //    {
-        //        _context.Add(image);
-        //        await _context.SaveChangesAsync();
+        //         _repositoryWrapper.ImageRepository.Create(image);
+        //        _repositoryWrapper.Save();
         //        return RedirectToAction(nameof(Index));
         //    }
-        //    return View(image);
+        //    return View();
         //}
 
         //// GET: Images/Edit/5

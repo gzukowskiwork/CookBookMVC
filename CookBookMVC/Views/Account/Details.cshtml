@@ -1,1 +1,22 @@
-﻿
+﻿@model Models.Models.Identity.ApplicationUser
+
+<h1>user details</h1>
+
+@Html.DisplayNameFor(model => model.UserName)
+@Html.DisplayFor(model => model.UserName)
+@Html.DisplayNameFor(model => model.Email)
+@Html.DisplayFor(model => model.Email)
+@try
+{
+    if (ViewBag.HasChangedEmail)
+    {
+        <partial name="_ChangeEmailSuccess" />
+    }
+}
+catch
+{
+
+}
+
+<a asp-controller="Account" asp-action="ChangePassword">Change password</a>
+<a asp-controller="Account" asp-action="ChangeEmail">Change email</a>

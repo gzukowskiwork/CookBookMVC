@@ -57,6 +57,11 @@ namespace CpntextLib.Context
                 .WithOne(i => i.Ingredient)
                 .HasForeignKey<IngredientCount>(ic => ic.IngredientId);
 
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Recipe)
+                .WithMany(x => x.Comments)
+                .HasForeignKey(c=>c.RecipeId);
+
             modelBuilder.ApplyConfiguration(new IdentityRoleConfiguration());
         }
     }
